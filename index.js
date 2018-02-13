@@ -91,7 +91,11 @@ module.exports = robot => {
   })
 }
 
-app.get('/:city', (req, res) => {
+app.get('/', (req, res) => {
+  res.send('Huemul Airlines');
+});
+
+app.get('/city/:city', (req, res) => {
   const cityParam = req.params.city;
   if(!cityParam) return res.json(null);
   const city = cityParam
