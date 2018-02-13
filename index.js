@@ -108,7 +108,7 @@ app.get('/:city', (req, res) => {
       return res.send('Aún no se como buscar vuelos para esa ciudad pero @raerpo_ me puede enseñar :retard:')
     const cityCode = cityCodes[city]
     ;(async () => {
-      const browser = await puppeteer.launch()
+      const browser = await puppeteer.launch({args: ['--no-sandbox', '--disable-setuid-sandbox']})
       const page = await browser.newPage()
       page.setViewport({ width: 1280, height: 1000 })
       await page.goto(`https://www.despegar.cl/vuelos/scl/${cityCode}/`, { waitUntil: 'networkidle2' })
