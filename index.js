@@ -58,39 +58,6 @@ const cityCodes = {
   beijing: 'bjs'
 }
 
-module.exports = robot => {
-  robot.respond(/vuelo barato a (.*)/i, msg => {
-    // Normalize city name
-    const city = msg.match[1]
-      .toLowerCase()
-      .replace('á', 'a')
-      .replace('é', 'e')
-      .replace('í', 'i')
-      .replace('ó', 'o')
-      .replace('ú', 'u')
-      .replace('ñ', 'n')
-      .replace('ã', 'a')
-    const cityExist = typeof cityCodes[city] !== 'undefined'
-    if (!cityExist)
-      return msg.send('Aún no se como buscar vuelos para esa ciudad pero @raerpo_ me puede enseñar :retard:')
-    const cityCode = cityCodes[city]
-    msg.send(`Buscando el vuelo más barato para ${msg.match[1]} desde Santigo :airplane_departure: :loading:`)
-    ;(async () => {
-      const browser = await puppeteer.launch()
-      const page = await browser.newPage()
-      page.setViewport({ width: 1280, height: 1000 })
-      await page.goto(`https://www.despegar.cl/vuelos/scl/${cityCode}/`, { waitUntil: 'networkidle2' })
-      const price = await page.evaluate(() => document.querySelector('#alerts .price-amount').textContent)
-      if (!price) {
-        msg.send(`No encontré ningún vuelo para ${city} desde Santiago :sadhuemul:`)
-      }
-      msg.send(`Encontré vuelos desde CLP ${price}`)
-      msg.send(`Se puede comprar aquí: https://www.despegar.cl/vuelos/scl/${cityCode}/`)
-      await browser.close()
-    })()
-  })
-}
-
 app.get('/', (req, res) => {
   res.send('Huemul Airlines...');
 });
@@ -109,7 +76,7 @@ app.get('/city/:city', (req, res) => {
       .replace('ã', 'a')
     const cityExist = typeof cityCodes[city] !== 'undefined'
     if (!cityExist)
-      return res.send('Aún no se como buscar vuelos para esa ciudad pero @raerpo_ me puede enseñar :retard:')
+      res.json({error: 'Ciudad no registrada'})
     const cityCode = cityCodes[city]
     ;(async () => {
       const browser = await puppeteer.launch({args: ['--no-sandbox', '--disable-setuid-sandbox']})
@@ -118,7 +85,7 @@ app.get('/city/:city', (req, res) => {
       await page.goto(`https://www.despegar.cl/vuelos/scl/${cityCode}/`, { waitUntil: 'networkidle2' })
       const price = await page.evaluate(() => document.querySelector('#alerts .price-amount').textContent)
       if (!price) {
-        res.send(`No encontré ningún vuelo para ${city} desde Santiago :sadhuemul:`)
+        res.json({error: 'No hay vuelos para esas ciudad'})
       }
       res.json({price})
       await browser.close()
