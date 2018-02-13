@@ -92,7 +92,7 @@ module.exports = robot => {
 }
 
 app.get('/', (req, res) => {
-  res.send('Huemul Airlines');
+  res.send('Huemul Airlines...');
 });
 
 app.get('/city/:city', (req, res) => {
