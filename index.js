@@ -78,16 +78,17 @@ app.get('/city/:city', (req, res) => {
     if (!cityExist)
       res.json({error: 'Ciudad no registrada'})
     const cityCode = cityCodes[city]
+    const despegarUrl = `https://www.despegar.cl/vuelos/scl/${cityCode}/`;
     ;(async () => {
       const browser = await puppeteer.launch({args: ['--no-sandbox', '--disable-setuid-sandbox']})
       const page = await browser.newPage()
       page.setViewport({ width: 1280, height: 1000 })
-      await page.goto(`https://www.despegar.cl/vuelos/scl/${cityCode}/`, { waitUntil: 'networkidle2' })
+      await page.goto(despegarUrl, { waitUntil: 'networkidle2' })
       const price = await page.evaluate(() => document.querySelector('#alerts .price-amount').textContent)
       if (!price) {
         res.json({error: 'No hay vuelos para esas ciudad'})
       }
-      res.json({price})
+      res.json({price, url: despegarUrl })
       await browser.close()
     })()
 });
