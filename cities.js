@@ -32,7 +32,8 @@ module.exports = {
   'sao paulo': 'sao',
   // Uruguay
   montevideo: 'mvd',
-
+  // Venezuela
+  caracas: 'ccs',
   // Norte america
   'new york': 'NYC',
   miami: 'mia',
