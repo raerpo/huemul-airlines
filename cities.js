@@ -50,6 +50,7 @@ module.exports = {
   barcelona: 'bcn',
   // Asia
   tokyo: 'tyo',
+  tokio: 'tyo',
   beijing: 'bjs',
   'kuala lumpur': 'kul'
 }
