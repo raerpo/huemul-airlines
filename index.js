@@ -77,6 +77,7 @@ app.get('/city/:city', (req, res) => {
     const cityExist = typeof cityCodes[city] !== 'undefined'
     if (!cityExist)
       res.json({error: 'Ciudad no registrada'})
+      return;
     const cityCode = cityCodes[city]
     const despegarUrl = `https://www.despegar.cl/vuelos/scl/${cityCode}/`;
     ;(async () => {
