@@ -25,7 +25,7 @@ app.get('/city/:city', (req, res) => {
       .replace('ã', 'a')
     const cityExist = typeof cityCodes[city] !== 'undefined'
     if (!cityExist) {
-      res.json({error: 'Aún no tengo vuelos a esa ciudad :airplane-arriving:'})
+      res.json({error: 'Aún no tengo vuelos a esa ciudad'})
       return;
     }
     const cityCode = cityCodes[city]
