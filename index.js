@@ -76,7 +76,7 @@ app.get('/city/:city', (req, res) => {
       .replace('ã', 'a')
     const cityExist = typeof cityCodes[city] !== 'undefined'
     if (!cityExist)
-      res.json({error: 'Ciudad no registrada'})
+      res.json({error: 'Aún no tengo vuelos a esa ciudad :airplane-arriving:'})
       return;
     const cityCode = cityCodes[city]
     const despegarUrl = `https://www.despegar.cl/vuelos/scl/${cityCode}/`;
@@ -87,7 +87,7 @@ app.get('/city/:city', (req, res) => {
       await page.goto(despegarUrl, { waitUntil: 'networkidle2' })
       const price = await page.evaluate(() => document.querySelector('#alerts .price-amount').textContent)
       if (!price) {
-        res.json({error: 'No hay vuelos para esas ciudad'})
+        res.json({error: 'No hay vuelos para esta ciudad'})
       }
       res.json({price, url: despegarUrl })
       await browser.close()
