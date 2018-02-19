@@ -49,6 +49,7 @@ module.exports = {
   berlin: 'ber',
   moscu: 'mow',
   barcelona: 'bcn',
+  florencia: 'flr',
   // Asia
   tokyo: 'tyo',
   tokio: 'tyo',
