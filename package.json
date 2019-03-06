@@ -9,7 +9,7 @@
   },
   "scripts": {
     "start": "node index.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "nyc mocha"
   },
   "keywords": [],
   "author": "",
@@ -18,5 +18,15 @@
     "express": "^4.16.2",
     "nodemon": "^1.14.12",
     "puppeteer": "^1.0.0"
+  },
+  "devDependencies": {
+    "chai": "4.2.0",
+    "mocha": "6.0.2",
+    "nock": "10.0.6",
+    "nyc": "13.3.0",
+    "nyc-config-common": "1.0.1"
+  },
+  "nyc": {
+    "extends": "nyc-config-common"
   }
 }
