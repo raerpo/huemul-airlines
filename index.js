@@ -21,7 +21,7 @@ app.get('/city/:city', (req, res) => {
     try {
       foundCities = await utils.findCities(cityParam)
     } catch (error) {
-      res.send('No encuentro esa ciudad')
+      res.json({error: 'No encuentro esa ciudad'})
     }
     const cityExist = typeof foundCities !== 'undefined' && foundCities.length > 0
     if (!cityExist) {
