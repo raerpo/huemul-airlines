@@ -22,6 +22,10 @@ app.get('/city/:city', (req, res) => {
     res.json({ error: 'No hay vuelos de Santiago a Santiago :retard:' })
     return
   }
+  if (cityParam === 'Rancagua' || cityParam === 'rancagua') {
+    res.json({ error: 'Rancagua no existe :retard:' })
+    return
+  }
 
   ;(async () => {
     let foundCities = []
