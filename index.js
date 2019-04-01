@@ -15,6 +15,7 @@ app.get('/', (req, res) => {
   res.send('Huemul Airlines...')
 })
 
+// Despegar
 app.get('/city/:city', (req, res) => {
   const cityParam = req.params.city
   if (!cityParam) return res.json(null)
@@ -48,6 +49,51 @@ app.get('/city/:city', (req, res) => {
             res.json({ error: 'No encuentro vuelos para esta ciudad' })
           }
           res.json({ price, url: despegarUrl })
+          await browser.close()
+        } catch (error) {
+          res.json({ error: 'No encuentro vuelos para esta ciudad' })
+        }
+      }
+    } catch (error) {
+      res.json({ error: 'No encuentro esa ciudad' })
+    }
+  })()
+})
+
+// TurismoCity
+app.get('/city-beta/:city', (req, res) => {
+  const cityParam = req.params.city
+  if (!cityParam) return res.json(null)
+  if (cityParam === 'Santiago' || cityParam === 'santiago') {
+    res.json({ error: 'No hay vuelos de Santiago a Santiago :retard:' })
+    return
+  }
+  if (cityParam === 'Rancagua' || cityParam === 'rancagua') {
+    res.json({ error: 'Rancagua no existe :retard:' })
+    return
+  }
+
+  ;(async () => {
+    let foundCities = []
+    try {
+      foundCities = await utils.findCities(cityParam)
+      const cityExist = typeof foundCities !== 'undefined' && foundCities.length > 0
+      if (!cityExist) {
+        res.json({ error: 'Aún no tengo vuelos a esa ciudad' })
+      } else {
+        // Select the first city found
+        const cityCode = foundCities[0].code.toLocaleLowerCase()
+        const turismoCLUrl = `https://www.turismocity.cl/vuelos-baratos-desde-SCL-a-hacia-${cityCode}-a`
+        const browser = await puppeteer.launch({ args: ['--no-sandbox', '--disable-setuid-sandbox'] })
+        const page = await browser.newPage()
+        page.setViewport({ width: 1280, height: 1000 })
+        await page.goto(turismoCLUrl, { waitUntil: 'domcontentloaded' })
+        try {
+          const price = await page.evaluate(() => document.querySelector('.tc-price-table .price-td > span').textContent)
+          if (!price) {
+            res.json({ error: 'No encuentro vuelos para esta ciudad' })
+          }
+          res.json({ price, url: turismoCLUrl })
           await browser.close()
         } catch (error) {
           res.json({ error: 'No encuentro vuelos para esta ciudad' })
