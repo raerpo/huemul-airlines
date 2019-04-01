@@ -48,7 +48,7 @@ app.get('/city/:city', (req, res) => {
           if (!price) {
             res.json({ error: 'No encuentro vuelos para esta ciudad' })
           }
-          res.json({ price, url: despegarUrl })
+          res.json({ price: price.replace('$ ', ''), url: despegarUrl })
           await browser.close()
         } catch (error) {
           res.json({ error: 'No encuentro vuelos para esta ciudad' })
@@ -93,7 +93,7 @@ app.get('/city-beta/:city', (req, res) => {
           if (!price) {
             res.json({ error: 'No encuentro vuelos para esta ciudad' })
           }
-          res.json({ price, url: turismoCLUrl })
+          res.json({ price: price.replace('$ ', ''), url: turismoCLUrl })
           await browser.close()
         } catch (error) {
           res.json({ error: 'No encuentro vuelos para esta ciudad' })
