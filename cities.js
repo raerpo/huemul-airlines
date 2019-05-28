@@ -22,6 +22,7 @@ module.exports = {
   medellin: 'eoh',
   'cartagena de indias': 'ctg',
   'san andres': 'adz',
+  cucuta: 'cuc',
   // Argentina
   'buenos aires': 'bue',
   mendoza: 'mdz',
