@@ -105,6 +105,31 @@ app.get('/city-beta/:city', (req, res) => {
   })()
 })
 
+// TEMPORAL: plebiscito
+app.get('/plebiscito', async (req, res) => {
+  const URL = 'https://teletrece-plebiscito.web.app/nueva-constitucion/index.html';
+  const browser = await puppeteer.launch({ args: ['--no-sandbox', '--disable-setuid-sandbox'] });
+  const page = await browser.newPage();
+  page.setViewport({ width: 1280, height: 1000 });
+  await page.goto(URL, { waitUntil: 'domcontentloaded' });
+  await page.waitFor(2000);
+  try {
+    const aprueboPercentage = await page.evaluate(() => document.querySelector('#teletrece-plebiscito-apruebo-percent').textContent);
+    const aprueboVotes = await page.evaluate(() => document.querySelector('#teletrece-plebiscito-apruebo-votes').textContent);
+    const rechazoPercentage = await page.evaluate(() => document.querySelector('#teletrece-plebiscito-rechazo-percent').textContent);
+    const rechazoVotes = await page.evaluate(() => document.querySelector('#teletrece-plebiscito-rechazo-votes').textContent);
+
+    res.json({ 
+      apruebo: { percentage: aprueboPercentage, votes: aprueboVotes}, 
+      rechazo: { percentage:rechazoPercentage, votes:rechazoVotes}
+    });
+    await browser.close()
+  } catch (error) {
+    console.log(error)
+    res.json({ error: 'No encuentro vuelos para esta ciudad' })
+  }
+})
+
 const port = process.env.PORT || 9090
 
 app.listen(port, () => {
